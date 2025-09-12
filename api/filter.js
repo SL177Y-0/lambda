@@ -1,10 +1,13 @@
-export default function handler(req, res) {
-  try {
-    const { items } = req.body || {};
-    const activeItems = (items || []).filter(item => item.active === true);
+import express from "express";
 
-    res.status(200).json({ activeItems });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-}
+const app = express();
+app.use(express.json());
+
+app.post("/filter", (req, res) => {
+  const { items } = req.body || {};
+  const activeItems = (items || []).filter(item => item.active === true);
+  res.json({ activeItems });
+});
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Server running on port ${port}`));
